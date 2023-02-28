@@ -1,23 +1,27 @@
-package com.view;
+package com.chat.view;
+import com.chat.sockets.Server;
+
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class MainView {
     private JPanel panel;
     private JTextField serverText;
     private JButton sendbtn;
-    private JTextArea textArea;
+    private JTextArea textAreaChat;
     private JTextField chatText;
-    private JButton connectButton;
+    private JButton connectbtn;
     private JPanel panelHeader;
     private JPanel panelUsers;
     private JLabel labelServer;
     private JTextArea textAreaUsers;
     private JLabel nickname;
+    private Server server;
 
-    public MainView() {
+    public MainView(Server server) {
+        this.server = new Server();
         this.openPanelOption();
         JFrame frame = new JFrame("first window");
         frame.setContentPane(panel);
@@ -44,7 +48,7 @@ public class MainView {
 
         if (result == JOptionPane.YES_OPTION){
             panelHeader.setVisible(false);
-            connectButton.setText("Start Server");
+            connectbtn.setText("Start Server");
             textAreaUsers.append(textField.getText());
 
 
@@ -66,15 +70,30 @@ public class MainView {
     }
 
     public void connectButton() {
-        connectButton.addActionListener(new ActionListener() {
+        connectbtn.addActionListener(new ActionListener() {
+
             @Override
-            public void actionPerformed(ActionEvent e) {
-                if(connectButton.getText().equals("Start Server")) System.out.println("START SERVER!");
-                if(connectButton.getText().equals("Connect")) System.out.println("Connect to SERVER!");
+            public void actionPerformed(ActionEvent event) {
+                if(event.getActionCommand().equals("Start Server")) {
+                    server.initServer();
+                    connectbtn.setText("Disconnect");
+                }
+                if(event.getActionCommand().equals("Disconnect")) {
+                    try {
+                        server.serverSocket.close();
+                        connectbtn.setText("Start Server");
+                    } catch (IOException e) {
+                        JOptionPane.showConfirmDialog(null, e.getMessage());
+                    }
+                }
 
             }
         });
     }
+    public void setTextAreaChat(String message) {
+        this.textAreaChat.append(message);
+    }
+
 
 
 }
