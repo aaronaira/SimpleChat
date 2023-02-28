@@ -1,39 +1,34 @@
-package com.sockets;
+package com.chat.sockets;
 
 import java.io.*;
-import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Client implements Runnable{
+public class Client2 {
 
-
-    public Client() {
-        Thread socketLoop = new Thread(this);
-        socketLoop.start();
-    }
     public static void main(String[] args) {
-        Client client = new Client();
-
+        Client2 client = new Client2();
 
     }
 
-    @Override
-    public void run() {
+    public Client2() {
         try (Socket socket = new Socket("192.168.1.33", 5000)) {
-
 
             while(true) {
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());
                 DataInputStream in = new DataInputStream(socket.getInputStream());
-                out.writeUTF("Client1: Sending message");
+                out.writeUTF("Client2: Sending message");
                 System.out.println(in.readUTF());
 
             }
 
 
+
+
+
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-
     }
+
+
 }

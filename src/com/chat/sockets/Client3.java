@@ -1,4 +1,4 @@
-package com.sockets;
+package com.chat.sockets;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
